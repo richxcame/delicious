@@ -252,7 +252,7 @@ export default {
 			this.$axios
 				.delete(`/superadmin/restaraunts/${id}`)
 				.then(() => {
-					this.showAlert('Successfully deleted');
+					this.showAlert(this.$t('successfullyDeleted'));
 				})
 				.catch(err => {
 					this.showAlert(err.message);

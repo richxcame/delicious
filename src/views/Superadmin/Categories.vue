@@ -154,7 +154,7 @@ export default {
 			this.loading = true;
 			this.$axios
 				.post('/superadmin/categories', this.category)
-				.then(res => {
+				.then(() => {
 					this.showAlert(this.$t('successfullyCreated'));
 				})
 				.catch(err => {

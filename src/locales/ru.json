@@ -38,5 +38,7 @@
 	"home": "Home",
 	"article": "Article | Articles",
 	"user": "User | Users",
-	"me": "Me"
+	"me": "Me",
+	"searchAnyDataFromArticles": "Search any data from articles",
+	"status": "Status"
 }

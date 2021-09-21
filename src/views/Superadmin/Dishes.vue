@@ -251,8 +251,8 @@ export default {
 		deleteDish({ id }) {
 			this.$axios
 				.delete(`/superadmin/dishes/${id}`)
-				.then(res => {
-					this.showAlert('Successfully deleted');
+				.then(() => {
+					this.showAlert(this.$t('successfullyDeleted'));
 				})
 				.catch(err => {
 					this.showAlert(err.message);

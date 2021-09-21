@@ -1,77 +1,96 @@
 <template>
 	<section>
-		<v-container>
-			<v-row>
-				<v-col cols="12" md="6">
-					<v-text-field v-model="name" outlined dense label="Name" />
-					<v-file-input
-						v-model="image"
-						outlined
-						dense
-						accept="image/*"
-						show-size
-						label="Add image"
-					/>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-textarea
-						outlined
-						dense
-						label="Description"
-						v-model="description"
-					/>
-				</v-col>
-			</v-row>
-			<v-btn
-				block
-				height="45"
-				color="primary"
-				:disabled="isLoading"
-				:loading="isLoading"
-				@click="setArticle"
-			>
-				Add article
-				<template v-slot:loader>
-					<span class="custom-loader">
-						<v-icon light>
-							mdi-cached
-						</v-icon>
-					</span>
+		<v-row>
+			<v-col cols="12" md="4">
+				<v-text-field
+					v-model="article.name_tm"
+					outlined
+					dense
+					:label="$t('nameInTurkmen')"
+				/>
+			</v-col>
+			<v-col cols="12" md="4">
+				<v-text-field
+					v-model="article.name_ru"
+					outlined
+					dense
+					:label="$t('nameInRussian')"
+				/>
+			</v-col>
+			<v-col cols="12" md="4">
+				<v-file-input
+					v-model="image"
+					outlined
+					dense
+					accept="image/*"
+					show-size
+					:label="$t('addImage')"
+				/>
+			</v-col>
+			<v-col cols="12" md="6">
+				<v-textarea
+					outlined
+					dense
+					auto-grow
+					:label="$t('descriptionInTurkmen')"
+					v-model="article.description_tm"
+				/>
+			</v-col>
+			<v-col cols="12" md="6">
+				<v-textarea
+					outlined
+					dense
+					auto-grow
+					:label="$t('descriptionInRussian')"
+					v-model="article.description_ru"
+				/>
+			</v-col>
+		</v-row>
+		<v-btn
+			block
+			height="45"
+			color="primary"
+			:disabled="isLoading"
+			:loading="isLoading"
+			@click="setArticle"
+		>
+			Add article
+			<template v-slot:loader>
+				<span class="custom-loader">
+					<v-icon light>
+						mdi-cached
+					</v-icon>
+				</span>
+			</template>
+		</v-btn>
+		<v-card class="my-5">
+			<v-card-title>
+				{{ $tc('article') }}
+				<v-spacer />
+				<v-text-field
+					v-model="search"
+					:placeholder="$t('searchAnyDataFromArticles')"
+					outlined
+					dense
+					append-icon="mdi-magnify"
+				/>
+			</v-card-title>
+			<v-data-table :headers="headers" :items="articles" :search="search">
+				<template v-slot:[`item.active`]="{ item }">
+					<v-switch v-model="item.active" @change="updateArticle(item)" />
 				</template>
-			</v-btn>
-			<v-card class="my-5">
-				<v-card-title>
-					Articles
-					<v-spacer />
-					<v-text-field
-						v-model="search"
-						placeholder="Search from articles any data"
-						outlined
-						dense
-						append-icon="mdi-magnify"
-					/>
-				</v-card-title>
-				<v-data-table :headers="headers" :items="items" :search="search">
-					<template v-slot:[`item.active`]="{ item }">
-						<v-switch
-							v-model="item.active"
-							@change="updateArticle(item)"
-						></v-switch>
-					</template>
-					<template v-slot:[`item.actions`]="{ item }">
-						<v-icon class="mr-2" color="primary" @click="updateArticle(item)">
-							mdi-pencil
-						</v-icon>
-						<v-icon color="red darken-2" @click="deleteArticle(item)">
-							mdi-delete
-						</v-icon>
-					</template>
-				</v-data-table>
-			</v-card>
-		</v-container>
+				<template v-slot:[`item.actions`]="{ item }">
+					<v-icon class="mr-2" color="primary" @click="updateArticle(item)">
+						mdi-pencil
+					</v-icon>
+					<v-icon color="red darken-2" @click="deleteArticle(item)">
+						mdi-delete
+					</v-icon>
+				</template>
+			</v-data-table>
+		</v-card>
 		<v-snackbar
 			app
-			absolute
 			bottom
 			timeout="7000"
 			color="primary"
@@ -87,45 +106,58 @@
 </template>
 
 <script>
-export default {
-	data: () => ({
-		name: '',
-		description: '',
-		image: null,
-		images: [],
-		headers: [
-			{ text: 'Name', value: 'name' },
-			{ text: 'Description', value: 'description' },
-			{ text: 'images', value: 'images', align: 'center', sortable: false },
-			{ text: 'Status', value: 'active', align: 'center' },
-			{ text: 'Actions', value: 'actions', align: 'end', sortable: false },
-		],
-		items: [],
-		search: '',
-		isLoading: false,
-		hasAlert: false,
-		alert: '',
-	}),
+import { mapState, mapActions } from 'vuex';
 
+export default {
+	data() {
+		return {
+			article: {
+				name_tm: '',
+				name_ru: '',
+				description_tm: '',
+				description_ru: '',
+				images: [],
+			},
+			headers: [
+				{
+					text: this.$tc('images', 1),
+					value: 'images',
+					sortable: false,
+				},
+				{ text: this.$t('nameInTurkmen'), value: 'name_tm' },
+				{ text: this.$t('descriptionInTurkmen'), value: 'description_tm' },
+				{ text: this.$t('status'), value: 'active', align: 'center' },
+				{
+					text: this.$tc('action', 2),
+					value: 'actions',
+					align: 'end',
+					sortable: false,
+				},
+			],
+			image: null,
+			search: '',
+			isLoading: false,
+			hasAlert: false,
+			alert: '',
+		};
+	},
 	watch: {
 		image(img) {
 			if (img) {
-				this.images.push(img);
+				this.article.images.push(img);
 			}
 		},
 	},
-
+	computed: {
+		...mapState(['articles']),
+	},
 	methods: {
+		...mapActions(['fetchArticles']),
 		setArticle() {
 			this.isLoading = true;
 			this.$axios
-				.post('/superadmin/articles', {
-					name: this.name,
-					description: this.description,
-					images: this.images,
-				})
-				.then(res => {
-					this.isLoading = false;
+				.post('/superadmin/articles', this.article)
+				.then(() => {
 					this.reset();
 					this.alert = 'Successfully created';
 					this.hasAlert = true;
@@ -136,49 +168,34 @@ export default {
 					this.hasAlert = true;
 				});
 		},
-
-		updateArticle(item) {
-			this.$axios
-				.put(`/superadmin/articles/${item.id}`, item)
-				.then(res => {
-					this.alert = 'Successfully updated';
-					this.hasAlert = true;
-				})
-				.catch(err => {
-					this.alert = err.message;
-					this.hasAlert = true;
-				});
-		},
-
 		reset() {
-			this.name = '';
-			this.description = '';
-			this.images = [];
-			this.image = null;
+			this.article.name_tm = '';
+			this.article.name_ru = '';
+			this.article.images = [];
+			this.article.description_tm = '';
+			this.article.description_ru = '';
 		},
-
-		deleteArticle({ id }) {
+		updateArticle(article) {
+			this.$router.push(`/superadmin/articles/${article.id}`);
+		},
+		deleteArticle(article) {
 			this.$axios
-				.delete(`/superadmin/articles/${id}`)
-				.then(res => {
-					this.$router.go();
+				.delete(`/superadmin/articles/${article.id}`)
+				.then(() => {
+					this.showAlert(this.$t('successfullyDeleted'));
 				})
 				.catch(err => {
-					this.alert = err.message;
-					this.hasAlert = true;
+					this.showAlert(err.message);
 				});
+		},
+		showAlert(mes) {
+			this.isLoading = false;
+			this.alert = mes;
+			this.hasAlert = true;
 		},
 	},
 	created() {
-		this.$axios
-			.get('/superadmin/articles')
-			.then(res => {
-				this.items = res.data.data;
-				console.log(this.items);
-			})
-			.catch(err => {
-				console.log(err);
-			});
+		this.fetchArticles();
 	},
 };
 </script>
