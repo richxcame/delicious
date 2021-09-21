@@ -34,5 +34,9 @@
 	"addressInTurkmen": "Address in Turkmen",
 	"addressInRussian": "Address in Russian",
 	"workingStartTime": "Working start time",
-	"workingFinishTime": "Working finish time"
+	"workingFinishTime": "Working finish time",
+	"home": "Home",
+	"article": "Article | Articles",
+	"user": "User | Users",
+	"me": "Me"
 }

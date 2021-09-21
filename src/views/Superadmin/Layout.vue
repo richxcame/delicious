@@ -65,30 +65,44 @@
 
 <script>
 export default {
-	data: () => ({
-		drawer: false,
-		mini: true,
-		links: [
-			{ icon: 'mdi-home-outline', to: '/superadmin/', name: 'Home' },
-			{
-				icon: 'mdi-home-group',
-				to: '/superadmin/restaraunts',
-				name: 'Restaraunts',
-			},
-			{ icon: 'mdi-food', to: '/superadmin/dishes', name: 'Dishes' },
-			{
-				icon: 'mdi-animation-outline',
-				to: '/superadmin/categories',
-				name: 'Categories',
-			},
-			{ icon: 'mdi-carrot', to: '/superadmin/articles', name: 'Articles' },
-			{
-				icon: 'mdi-account-group-outline',
-				to: '/superadmin/users',
-				name: 'Users',
-			},
-			{ icon: 'mdi-account-circle-outline', to: '/superadmin/me', name: 'Me' },
-		],
-	}),
+	data() {
+		return {
+			drawer: false,
+			mini: true,
+			links: [
+				{ icon: 'mdi-home-outline', to: '/superadmin/', name: this.$t('home') },
+				{
+					icon: 'mdi-home-group',
+					to: '/superadmin/restaurants',
+					name: 'Restaraunts',
+				},
+				{
+					icon: 'mdi-food',
+					to: '/superadmin/dishes',
+					name: this.$tc('dish', 2),
+				},
+				{
+					icon: 'mdi-animation-outline',
+					to: '/superadmin/categories',
+					name: this.$tc('category', 2),
+				},
+				{
+					icon: 'mdi-carrot',
+					to: '/superadmin/articles',
+					name: this.$tc('article', 2),
+				},
+				{
+					icon: 'mdi-account-group-outline',
+					to: '/superadmin/users',
+					name: this.$tc('user', 2),
+				},
+				{
+					icon: 'mdi-account-circle-outline',
+					to: '/superadmin/me',
+					name: this.$t('me'),
+				},
+			],
+		};
+	},
 };
 </script>

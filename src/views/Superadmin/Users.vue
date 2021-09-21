@@ -3,7 +3,7 @@
 		<v-container>
 			<v-card>
 				<v-card-title>
-					{{ $t('user') }}
+					{{ $tc('user', 2) }}
 					<v-spacer />
 					<v-text-field
 						v-model="search"
