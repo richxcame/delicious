@@ -48,7 +48,7 @@
 
 		<v-main>
 			<v-container>
-				<router-view :key="$router.fullPath" />
+				<router-view :key="$route.fullPath" />
 			</v-container>
 		</v-main>
 

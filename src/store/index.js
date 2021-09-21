@@ -11,6 +11,8 @@ export default new Vuex.Store({
 		dish: {},
 		ingredients: [],
 		ingredient: {},
+		restaraunts: [],
+		restaraunt: {},
 	},
 	mutations: {
 		setCategories(state, categories) {
@@ -30,6 +32,9 @@ export default new Vuex.Store({
 		},
 		setIngredient(state, ingredient) {
 			state.ingredient = ingredient;
+		},
+		setRestaurants(state, restaraunts) {
+			state.restaraunts = restaraunts;
 		},
 	},
 	actions: {
@@ -101,6 +106,18 @@ export default new Vuex.Store({
 				})
 				.catch(err => {
 					commit('setIngredient', {});
+					return err;
+				});
+		},
+		fetchRestaurants({ commit }) {
+			axios
+				.get('/superadmin/restaraunts')
+				.then(res => {
+					console.log(res.data);
+					commit('setRestaurants', res.data.data);
+					return res.data.data;
+				})
+				.catch(err => {
 					return err;
 				});
 		},

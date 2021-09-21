@@ -25,5 +25,6 @@
 	"ingredient": "Ingredient | Ingredients",
 	"price": "Price",
 	"updateDish": "Update dish",
-	"dishCount": "Dish count"
+	"dishCount": "Dish count",
+	"deliveryTime": "Delivery time"
 }

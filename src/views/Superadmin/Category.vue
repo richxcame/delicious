@@ -10,10 +10,17 @@
 							:width="200"
 							contain
 							class="ma-5"
+							@click="handleClick"
 						>
 							<template v-slot:placeholder>
 								<v-skeleton-loader type="image" />
 							</template>
+							<input
+								type="file"
+								ref="image"
+								style="display: none;"
+								@change="handleImage"
+							/>
 						</v-img>
 					</div>
 				</v-col>
@@ -31,7 +38,7 @@
 						/>
 					</div>
 				</v-col>
-				<v-btn @click="update(category)" block color="primary">
+				<v-btn @click="update" block color="primary">
 					{{ $t('updateCategory') }}
 				</v-btn>
 			</v-row>
@@ -69,11 +76,10 @@ export default {
 	},
 	methods: {
 		...mapActions(['fetchCategory']),
-		update(category) {
+		update() {
 			this.$axios
-				.put(`/superadmin/categories/${category.id}`, category)
+				.put(`/superadmin/categories/${this.category.id}`, this.category)
 				.then(() => {
-					this.dialog = false;
 					this.showAlert(this.$t('successfullyUpdated'));
 					this.$router.go(-1);
 				})
@@ -85,6 +91,15 @@ export default {
 			this.loading = false;
 			this.alert = mes;
 			this.hasAlert = true;
+		},
+		handleClick() {
+			this.$refs.image.click();
+		},
+		handleImage(e) {
+			const image = e.srcElement.files[0];
+			if (image) {
+				this.category.image = image;
+			}
 		},
 	},
 	created() {
