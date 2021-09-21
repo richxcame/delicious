@@ -28,5 +28,12 @@
 	"dishCount": "Dish count",
 	"deliveryTime": "Delivery time",
 	"restaurant": "Restaurant | Restaurants",
-	"addRestaurant": "Add restaurant"
+	"addRestaurant": "Add restaurant",
+	"addImage": "Add image",
+	"addImages": "Add images",
+	"shippingPrice": "Shipping price",
+	"addressInTurkmen": "Address in Turkmen",
+	"addressInRussian": "Address in Russian",
+	"workingStartTime": "Working start time",
+	"workingFinishTime": "Working finish time"
 }

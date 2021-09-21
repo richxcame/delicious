@@ -126,7 +126,6 @@ export default {
 				name_ru: '',
 				image: null,
 			},
-			loading: false,
 			headers: [
 				{ text: this.$t('image'), value: 'image', sortable: false },
 				{ text: this.$t('nameInTurkmen'), value: 'name_tm' },
@@ -141,9 +140,9 @@ export default {
 			],
 			items: [],
 			search: '',
+			loading: false,
 			alert: '',
 			hasAlert: false,
-			dialog: false,
 		};
 	},
 	computed: {

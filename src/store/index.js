@@ -111,6 +111,7 @@ export default new Vuex.Store({
 			axios
 				.get('/superadmin/restaraunts')
 				.then(res => {
+					console.log(res.data.data);
 					commit('setRestaurants', res.data.data);
 					return res.data.data;
 				})

@@ -3,20 +3,106 @@
 		<v-container>
 			<v-row>
 				<v-col cols="12" md="6">
-					<v-text-field v-model="name" outlined dense label="Restaraunt Name" />
+					<v-text-field
+						v-model="restaurant.name_tm"
+						outlined
+						dense
+						:label="$t('nameInTurkmen')"
+					/>
 				</v-col>
 				<v-col cols="12" md="6">
+					<v-text-field
+						v-model="restaurant.name_ru"
+						outlined
+						dense
+						:label="$t('nameInRussian')"
+					/>
+				</v-col>
+				<v-col cols="12" md="6">
+					<v-text-field
+						v-model="restaurant.address_tm"
+						outlined
+						dense
+						:label="$t('addressInTurkmen')"
+					/>
+				</v-col>
+				<v-col cols="12" md="6">
+					<v-text-field
+						v-model="restaurant.address_ru"
+						outlined
+						dense
+						:label="$t('addressInRussian')"
+					/>
+				</v-col>
+				<v-col cols="12" md="3">
+					<v-text-field
+						v-model="restaurant.shippingPrice"
+						outlined
+						dense
+						:label="$t('shippingPrice')"
+					/>
+				</v-col>
+				<v-col cols="12" md="3">
+					<v-text-field
+						v-model="restaurant.delivieryTime"
+						outlined
+						dense
+						:label="$t('deliveryTime')"
+					/>
+				</v-col>
+				<v-col cols="12" md="3">
+					<v-text-field
+						v-model="restaurant.workingStartTime"
+						outlined
+						dense
+						:label="$t('workingStartTime')"
+					/>
+				</v-col>
+				<v-col cols="12" md="3">
+					<v-text-field
+						v-model="restaurant.workingFinishTime"
+						outlined
+						dense
+						:label="$t('workingFinishTime')"
+					/>
+				</v-col>
+				<v-col cols="12">
 					<v-file-input
 						v-model="image"
 						outlined
 						dense
-						label="Add images to restaraunt"
+						:label="$t('addImages')"
 						accept="image/*"
 						show-size
 					/>
 				</v-col>
+				<v-col cols="12" md="6">
+					<v-textarea
+						v-model="restaurant.description_tm"
+						outlined
+						dense
+						:label="$t('descriptionInTurkmen')"
+						auto-grow
+					/>
+				</v-col>
+				<v-col cols="12" md="6">
+					<v-textarea
+						v-model="restaurant.description_ru"
+						outlined
+						dense
+						:label="$t('descriptionInRussian')"
+						auto-grow
+					/>
+				</v-col>
 			</v-row>
-			<v-btn color="primary" block height="45" @click="setRestaraunt">
+			<v-btn
+				color="primary"
+				block
+				height="45"
+				@click="setRestaraunt"
+				:loading="isLoading"
+				:disabled="isLoading"
+			>
 				{{ $t('addRestaurant') }}
 				<template v-slot:loader>
 					<span class="custom-loader">
@@ -54,6 +140,9 @@
 						</template>
 					</v-img>
 				</template>
+				<template v-slot:[`item.shippingPrice`]="{ item }">
+					{{ item.shippingPrice }} TMT
+				</template>
 				<template v-slot:[`item.actions`]="{ item }">
 					<div>
 						<v-btn icon class="mx-1" @click="updateRestaurant(item)">
@@ -61,7 +150,7 @@
 								mdi-pencil
 							</v-icon>
 						</v-btn>
-						<v-btn @click="deleteCategory(item)" icon class="mx-1">
+						<v-btn @click="deleteRestaurant(item)" icon class="mx-1">
 							<v-icon color="red darken-2">
 								mdi-delete
 							</v-icon>
@@ -71,7 +160,6 @@
 			</v-data-table>
 		</v-container>
 		<v-snackbar
-			absolute
 			bottom
 			timeout="7000"
 			color="primary"
@@ -92,17 +180,29 @@ import { mapState, mapActions } from 'vuex';
 export default {
 	data() {
 		return {
+			restaurant: {
+				name_tm: '',
+				name_ru: '',
+				images: [],
+				description_tm: '',
+				description_ru: '',
+				shippingPrice: '',
+				workingStartTime: '',
+				workingFinishTime: '',
+			},
 			name: '',
 			image: null,
-			images: [],
-			dialog: false,
-			dialogDelete: false,
 			headers: [
 				{ text: this.$tc('image', 2), sortable: false, value: 'images' },
 				{ text: this.$t('nameInTurkmen'), value: 'name_tm' },
 				{
 					text: this.$t('deliveryTime'),
 					value: 'deliveryTime',
+					align: 'center',
+				},
+				{
+					text: this.$t('shippingPrice'),
+					value: 'shippingPrice',
 					align: 'center',
 				},
 				{
@@ -113,22 +213,17 @@ export default {
 				},
 			],
 			items: [],
+			search: '',
+			isLoading: false,
 			alert: '',
 			hasAlert: false,
-			search: '',
 		};
 	},
 	watch: {
 		image(img) {
 			if (img) {
-				this.images.push(img);
+				this.restaurant.images.push(img);
 			}
-		},
-		dialog(val) {
-			val || this.close();
-		},
-		dialogDelete(val) {
-			val || this.closeDelete();
 		},
 	},
 	computed: {
@@ -137,12 +232,10 @@ export default {
 	methods: {
 		...mapActions(['fetchRestaurants']),
 		setRestaraunt() {
+			this.isLoading = true;
 			this.$axios
-				.post('/superadmin/restaraunts', {
-					name: this.name,
-					images: this.images,
-				})
-				.then(res => {
+				.post('/superadmin/restaraunts', this.restaurant)
+				.then(() => {
 					this.showAlert('Successfully created');
 					this.reset();
 				})
@@ -155,44 +248,27 @@ export default {
 			this.image = null;
 			this.images = [];
 		},
-		editItem(item) {
-			this.dialog = true;
-			this.$axios
-				.put(`/superadmin/restaraunts/${item.id}`, item)
-				.then(res => {
-					this.showAlert('Succesfully updated');
-					this.dialog = false;
-				})
-				.catch(err => {
-					this.showAlert(err.message);
-				});
-		},
 		deleteRestaraunt({ id }) {
 			this.$axios
 				.delete(`/superadmin/restaraunts/${id}`)
-				.then(res => {
+				.then(() => {
 					this.showAlert('Successfully deleted');
 				})
 				.catch(err => {
 					this.showAlert(err.message);
 				});
 		},
-		close() {
-			this.dialog = false;
-		},
-		closeDelete() {
-			this.dialogDelete = false;
-		},
-		showAlert(msg) {
-			this.alert = msg;
+		showAlert(mes) {
+			this.isLoading = false;
+			this.alert = mes;
 			this.hasAlert = true;
 		},
-		updateRestaurant(item) {
-			this.$router.push(`/superadmin/restaurants/${item.id}`);
+		updateRestaurant(restaurant) {
+			this.$router.push(`/superadmin/restaurants/${restaurant.id}`);
 		},
-		deleteRestaurant(item) {
+		deleteRestaurant(restaurant) {
 			this.$axios
-				.delete(`/superadmin/restaraunts/${item.id}`)
+				.delete(`/superadmin/restaraunts/${restaurant.id}`)
 				.then(() => {
 					this.showAlert(this.$t('successfullyDeleted'));
 					this.fetchCategories();
