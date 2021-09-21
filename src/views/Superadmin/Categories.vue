@@ -61,7 +61,7 @@
 					/>
 				</v-card-title>
 				<v-data-table :headers="headers" :items="categories" :search="search">
-					<template v-slot:item.image="{ item }">
+					<template v-slot:[`item.image`]="{ item }">
 						<div>
 							<v-img
 								:src="item.image"
@@ -76,12 +76,12 @@
 							</v-img>
 						</div>
 					</template>
-					<template v-slot:item.dishCount="{ item }">
+					<template v-slot:[`item.dishCount`]="{ item }">
 						<span class="success--text">{{ item.dishCount.active }}</span>
 						:
 						<span class="red--text">{{ item.dishCount.inActive }}</span>
 					</template>
-					<template v-slot:item.actions="{ item }">
+					<template v-slot:[`item.actions`]="{ item }">
 						<div>
 							<v-btn icon class="mx-1" @click="updateCategory(item)">
 								<v-icon color="primary">

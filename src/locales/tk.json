@@ -9,7 +9,7 @@
 	"category": "Category | Categories",
 	"categoryName": "Category name",
 	"categoryImage": "Category image",
-	"image": "Image",
+	"image": "Image | Images",
 	"action": "Action | Actions",
 	"successfullyCreated": "Succesfully created",
 	"nameInRussian": "Russian name",
@@ -28,5 +28,7 @@
 	"price": "Price",
 	"updateDish": "Update dish",
 	"dishCount": "Dish count",
-	"deliveryTime": "Delivery time"
+	"deliveryTime": "Delivery time",
+	"restaurant": "Restaurant | Restaurants",
+	"addRestaurant": "Add restaurant"
 }

@@ -11,8 +11,8 @@ export default new Vuex.Store({
 		dish: {},
 		ingredients: [],
 		ingredient: {},
-		restaraunts: [],
-		restaraunt: {},
+		restaurants: [],
+		restaurant: {},
 	},
 	mutations: {
 		setCategories(state, categories) {
@@ -33,8 +33,8 @@ export default new Vuex.Store({
 		setIngredient(state, ingredient) {
 			state.ingredient = ingredient;
 		},
-		setRestaurants(state, restaraunts) {
-			state.restaraunts = restaraunts;
+		setRestaurants(state, restaurants) {
+			state.restaurants = restaurants;
 		},
 		setRestaurant(state, restaraunt) {
 			state.restaraunt = restaraunt;
@@ -111,7 +111,6 @@ export default new Vuex.Store({
 			axios
 				.get('/superadmin/restaraunts')
 				.then(res => {
-					console.log(res.data);
 					commit('setRestaurants', res.data.data);
 					return res.data.data;
 				})

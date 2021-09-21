@@ -17,7 +17,7 @@
 				</v-col>
 			</v-row>
 			<v-btn color="primary" block height="45" @click="setRestaraunt">
-				Add Restaraunt
+				{{ $t('addRestaurant') }}
 				<template v-slot:loader>
 					<span class="custom-loader">
 						<v-icon light>
@@ -29,13 +29,12 @@
 			<v-data-table
 				:headers="headers"
 				:items="restaurants"
-				sort-by="rating"
 				class="elevation-2 mt-15"
 				:search="search"
 			>
 				<template v-slot:top>
 					<v-toolbar flat>
-						<v-toolbar-title>Restaurants</v-toolbar-title>
+						<v-toolbar-title>{{ $tc('restaurant', 2) }}</v-toolbar-title>
 						<v-divider class="mx-4" inset vertical></v-divider>
 						<v-spacer />
 						<v-text-field
@@ -46,55 +45,28 @@
 							append-icon="mdi-magnify"
 							label="Search from restaraunts any data"
 						/>
-						<v-dialog v-model="dialogDelete" max-width="500px">
-							<v-card>
-								<v-card-title
-									class="text-h5"
-									style="font-family: Poppins !important;"
-								>
-									Are you sure you want to delete this item?
-								</v-card-title>
-								<v-card-actions>
-									<v-spacer />
-									<v-btn color="primary" text @click="closeDelete">
-										Cancel
-									</v-btn>
-									<v-btn color="primary" text @click="deleteRestaraunt">
-										OK
-									</v-btn>
-									<v-spacer />
-								</v-card-actions>
-							</v-card>
-						</v-dialog>
 					</v-toolbar>
 				</template>
-				<template v-slot:item.image>
-					<div class="d-flex">
-						<v-btn icon class="my-auto">
+				<template v-slot:[`item.images`]="{ item }">
+					<v-img :src="item.images[0]" height="100" width="100" class="ma-2">
+						<template v-slot:placeholder>
+							<v-skeleton-loader type="image" />
+						</template>
+					</v-img>
+				</template>
+				<template v-slot:[`item.actions`]="{ item }">
+					<div>
+						<v-btn icon class="mx-1" @click="updateRestaurant(item)">
 							<v-icon color="primary">
-								mdi-chevron-left
+								mdi-pencil
 							</v-icon>
 						</v-btn>
-						<div>
-							<v-img src="../../assets/logo.png" height="75" width="75"></v-img>
-						</div>
-						<v-btn icon class="my-auto">
-							<v-icon color="primary">
-								mdi-chevron-right
+						<v-btn @click="deleteCategory(item)" icon class="mx-1">
+							<v-icon color="red darken-2">
+								mdi-delete
 							</v-icon>
 						</v-btn>
 					</div>
-				</template>
-				<template v-slot:item.rating>
-					<v-rating readonly dense value="3" small></v-rating>
-				</template>
-				<template v-slot:item.actions="{ item }">
-					<v-icon class="mr-2" @click="editItem(item)" color="primary">
-						mdi-pencil
-					</v-icon>
-					<v-icon @click="deleteRestaraunt(item)" color="red darken-2">
-						mdi-delete
-					</v-icon>
 				</template>
 			</v-data-table>
 		</v-container>
@@ -126,15 +98,19 @@ export default {
 			dialog: false,
 			dialogDelete: false,
 			headers: [
-				{ text: 'Images', sortable: false, value: 'images' },
+				{ text: this.$tc('image', 2), sortable: false, value: 'images' },
 				{ text: this.$t('nameInTurkmen'), value: 'name_tm' },
-				{ text: 'Rating', value: 'rating', align: 'center' },
 				{
 					text: this.$t('deliveryTime'),
-					value: 'numberRatings',
+					value: 'deliveryTime',
 					align: 'center',
 				},
-				{ text: 'Actions', value: 'actions', sortable: false, align: 'end' },
+				{
+					text: this.$tc('action', 2),
+					value: 'actions',
+					sortable: false,
+					align: 'end',
+				},
 			],
 			items: [],
 			alert: '',
@@ -210,6 +186,20 @@ export default {
 		showAlert(msg) {
 			this.alert = msg;
 			this.hasAlert = true;
+		},
+		updateRestaurant(item) {
+			this.$router.push(`/superadmin/restaurants/${item.id}`);
+		},
+		deleteRestaurant(item) {
+			this.$axios
+				.delete(`/superadmin/restaraunts/${item.id}`)
+				.then(() => {
+					this.showAlert(this.$t('successfullyDeleted'));
+					this.fetchCategories();
+				})
+				.catch(err => {
+					this.showAlert(err.message);
+				});
 		},
 	},
 	created() {
