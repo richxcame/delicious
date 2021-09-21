@@ -127,7 +127,7 @@ export default {
 				image: null,
 			},
 			headers: [
-				{ text: this.$t('image'), value: 'image', sortable: false },
+				{ text: this.$tc('image', 1), value: 'image', sortable: false },
 				{ text: this.$t('nameInTurkmen'), value: 'name_tm' },
 				{ text: this.$t('nameInRussian'), value: 'name_ru' },
 				{ text: this.$t('dishCount'), value: 'dishCount', align: 'center' },
