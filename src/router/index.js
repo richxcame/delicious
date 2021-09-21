@@ -21,6 +21,10 @@ const routes = [
 				component: () => import('../views/Superadmin/Restaurants.vue'),
 			},
 			{
+				path: 'restaurants/:id',
+				component: () => import('../views/Superadmin/Restaurant.vue'),
+			},
+			{
 				path: 'dishes',
 				component: () => import('../views/Superadmin/Dishes.vue'),
 			},

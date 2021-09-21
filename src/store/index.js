@@ -36,6 +36,9 @@ export default new Vuex.Store({
 		setRestaurants(state, restaraunts) {
 			state.restaraunts = restaraunts;
 		},
+		setRestaurant(state, restaraunt) {
+			state.restaraunt = restaraunt;
+		},
 	},
 	actions: {
 		fetchCategories({ commit }) {
@@ -46,7 +49,6 @@ export default new Vuex.Store({
 					return res.data.data;
 				})
 				.catch(err => {
-					commit('setCategories', []);
 					return err;
 				});
 		},
@@ -58,7 +60,6 @@ export default new Vuex.Store({
 					return res.data.data;
 				})
 				.catch(err => {
-					commit('category', {});
 					return err;
 				});
 		},
@@ -70,7 +71,6 @@ export default new Vuex.Store({
 					return res.data.data;
 				})
 				.catch(err => {
-					commit('setDishes', []);
 					return err;
 				});
 		},
@@ -93,7 +93,6 @@ export default new Vuex.Store({
 					return res.data.data;
 				})
 				.catch(err => {
-					commit('setIngredients', []);
 					return err;
 				});
 		},
@@ -105,7 +104,6 @@ export default new Vuex.Store({
 					return res.data.data;
 				})
 				.catch(err => {
-					commit('setIngredient', {});
 					return err;
 				});
 		},
@@ -115,6 +113,17 @@ export default new Vuex.Store({
 				.then(res => {
 					console.log(res.data);
 					commit('setRestaurants', res.data.data);
+					return res.data.data;
+				})
+				.catch(err => {
+					return err;
+				});
+		},
+		fetchRestaurant({ commit }, id) {
+			axios
+				.get(`/superadmin/restaraunts/${id}`)
+				.then(res => {
+					commit('setRestaurant', res.data.data);
 					return res.data.data;
 				})
 				.catch(err => {
