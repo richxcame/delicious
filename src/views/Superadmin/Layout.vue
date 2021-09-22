@@ -92,7 +92,7 @@ export default {
 					name: this.$tc('category', 2),
 				},
 				{
-					icon: 'mdi-carrot',
+					icon: 'mdi-wallpaper',
 					to: '/superadmin/articles',
 					name: this.$tc('article', 2),
 				},

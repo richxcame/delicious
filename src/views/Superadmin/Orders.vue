@@ -17,9 +17,9 @@
 			</template>
 			<template v-slot:[`item.actions`]="{ item }">
 				<div>
-					<v-btn icon class="mx-1" @click="updateOrder(item)" disabled>
+					<v-btn icon class="mx-1" @click="showOrder(item)">
 						<v-icon color="primary">
-							mdi-pencil
+							mdi-eye-outline
 						</v-icon>
 					</v-btn>
 					<v-btn @click="deleteOrder(item)" icon class="mx-1" disabled>
@@ -113,6 +113,9 @@ export default {
 				.catch(err => {
 					this.showAlert(err.message);
 				});
+		},
+		showOrder(order) {
+			this.$router.push(`/superadmin/orders/${order.id}`);
 		},
 	},
 	created() {

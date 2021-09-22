@@ -83,67 +83,6 @@
 				></v-sparkline>
 			</v-container>
 		</v-row>
-
-		<v-row>
-			<v-container>
-				<v-card>
-					<v-card-title>
-						{{ $tc('order', 2) }}
-						<v-spacer />
-						<v-text-field
-							v-model="search"
-							append-icon="mdi-magnify"
-							:label="$t('searchAnyDataFromOrders')"
-							outlined
-							dense
-							single-line
-							hide-details
-						/>
-					</v-card-title>
-					<v-data-table
-						:headers="headers"
-						:items="orders"
-						sort-by="deliveredAt"
-						:search="search"
-					>
-						<template v-slot:[`item.isDelivered`]="{ item }">
-							<v-switch v-model="item.isDelivered" />
-						</template>
-						<template v-slot:[`item.totalPrice`]="{ item }">
-							{{ item.totalPrice }} TMT
-						</template>
-						<template v-slot:[`item.actions`]="{ item }">
-							<div>
-								<v-btn icon class="mx-1" @click="updateCategory(item)">
-									<v-icon color="primary">
-										mdi-pencil
-									</v-icon>
-								</v-btn>
-								<v-btn @click="deleteOrder(item)" icon class="mx-1">
-									<v-icon color="red darken-2">
-										mdi-delete
-									</v-icon>
-								</v-btn>
-							</div>
-						</template>
-					</v-data-table>
-				</v-card>
-			</v-container>
-		</v-row>
-		<v-snackbar
-			app
-			absolute
-			bottom
-			right
-			timeout="4000"
-			color="primary"
-			dark
-			elevation="7"
-			v-model="hasAlert"
-			max-width="400"
-		>
-			{{ alert }}
-		</v-snackbar>
 	</section>
 </template>
 
@@ -153,9 +92,6 @@ import { mapState, mapActions } from 'vuex';
 export default {
 	data() {
 		return {
-			search: '',
-			alert: '',
-			hasAlert: false,
 			info: [
 				{
 					icon: 'mdi-monitor-cellphone',

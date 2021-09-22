@@ -52,5 +52,9 @@
 	"shippingAddress": "Shipping address",
 	"timeToDeliver": "Time to deliver",
 	"isDelivered": "Is delivered",
-	"urgent": "Urgent"
+	"urgent": "Urgent",
+	"customerName": "Customer name",
+	"isActive": "Is active",
+	"quantity": "Quantity",
+	"singlePrice": "Single price"
 }
