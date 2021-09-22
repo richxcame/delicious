@@ -56,5 +56,6 @@
 	"customerName": "Customer name",
 	"isActive": "Is active",
 	"quantity": "Quantity",
-	"singlePrice": "Single price"
+	"singlePrice": "Single price",
+	"goToLoginPage": "Go to login page"
 }
