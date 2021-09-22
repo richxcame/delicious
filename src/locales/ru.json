@@ -40,5 +40,6 @@
 	"user": "User | Users",
 	"me": "Me",
 	"searchAnyDataFromArticles": "Search any data from articles",
-	"status": "Status"
+	"status": "Status",
+	"role": "Role"
 }

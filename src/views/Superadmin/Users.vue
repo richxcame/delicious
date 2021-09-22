@@ -13,7 +13,7 @@
 						:label="$t('search')"
 					/>
 				</v-card-title>
-				<v-data-table :headers="headers" :items="items" :search="search">
+				<v-data-table :headers="headers" :items="users" :search="search">
 					<template v-slot:[`item.role`]="{ item }">
 						<v-chip :color="chipColor(item)" dark>
 							{{ item.role }}
@@ -31,37 +31,44 @@
 </template>
 
 <script>
-export default {
-	data: () => ({
-		headers: [
-			{ text: 'Name', value: 'name' },
-			{ text: 'Phone Number', value: 'phoneNumber' },
-			{ text: 'Role', align: 'center', value: 'role' },
-			{ text: 'Action', align: 'end', sortable: false, value: 'actions' },
-		],
-		items: [],
-		search: '',
-		name: '',
-		image: '',
-	}),
+import { mapState, mapActions } from 'vuex';
 
+export default {
+	data() {
+		return {
+			headers: [
+				{ text: this.$t('name'), value: 'name' },
+				{ text: $t('phoneNumber'), value: 'phoneNumber' },
+				{ text: $t('role'), align: 'center', value: 'role' },
+				{
+					text: this.$tc('action', 1),
+					value: 'actions',
+					align: 'end',
+					sortable: false,
+				},
+			],
+			search: '',
+		};
+	},
+	computed: {
+		...mapState(['users']),
+	},
 	methods: {
-		deleteCategory({ id }) {
+		...mapActions(['fetchUsers']),
+		deleteUser(user) {
 			this.$axios
-				.delete(`/superadmin/users/${id}`)
-				.then(res => {
-					console.log(res);
+				.delete(`/superadmin/users/${user.id}`)
+				.then(() => {
+					this.showAlert(this.$t('successfullyDeleted'));
 				})
 				.catch(err => {
-					console.log(err);
+					this.showAlert(err.message);
 				});
 		},
-
 		reset() {
 			this.name = '';
 			this.image = null;
 		},
-
 		chipColor({ role }) {
 			if (role == 'superadmin') {
 				return 'red';
@@ -72,20 +79,8 @@ export default {
 			}
 		},
 	},
-
 	created() {
-		// TODO: delete
-		console.log(this.$t);
-
-		this.$axios
-			.get('/superadmin/users')
-			.then(res => {
-				console.log(res);
-				this.items = res.data.data;
-			})
-			.catch(err => {
-				console.log(err);
-			});
+		this.fetchUsers();
 	},
 };
 </script>
