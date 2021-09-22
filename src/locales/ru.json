@@ -41,5 +41,8 @@
 	"me": "Me",
 	"searchAnyDataFromArticles": "Search any data from articles",
 	"status": "Status",
-	"role": "Role"
+	"role": "Role",
+	"searchAnyDataFromUsers": "Search any data from users",
+	"password": "Password",
+	"addUser": "addUser"
 }

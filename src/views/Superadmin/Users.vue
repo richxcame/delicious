@@ -1,32 +1,82 @@
 <template>
 	<section>
-		<v-container>
-			<v-card>
-				<v-card-title>
-					{{ $tc('user', 2) }}
-					<v-spacer />
-					<v-text-field
-						v-model="search"
-						outlined
-						dense
-						append-icon="mdi-magnify"
-						:label="$t('search')"
-					/>
-				</v-card-title>
-				<v-data-table :headers="headers" :items="users" :search="search">
-					<template v-slot:[`item.role`]="{ item }">
-						<v-chip :color="chipColor(item)" dark>
-							{{ item.role }}
-						</v-chip>
-					</template>
-					<template v-slot:[`item.actions`]="{ item }">
-						<v-icon color="red darken-2" @click="deleteCategory(item)">
-							mdi-delete
+		<v-row>
+			<v-col cols="12" md="4">
+				<v-text-field outlined dense v-model="user.name" :label="$t('name')" />
+			</v-col>
+			<v-col cols="12" md="4">
+				<v-text-field
+					outlined
+					dense
+					v-model="user.name"
+					:label="$t('phoneNumber')"
+				/>
+			</v-col>
+			<v-col cols="12" md="4">
+				<v-text-field
+					outlined
+					dense
+					v-model="user.password"
+					:label="$t('password')"
+				/>
+			</v-col>
+			<v-btn
+				color="primary"
+				block
+				height="45"
+				@click="setUser"
+				:loading="isLoading"
+				:disabled="isLoading"
+			>
+				{{ $t('addUser') }}
+				<template v-slot:loader>
+					<span class="custom-loader">
+						<v-icon light>
+							mdi-cached
 						</v-icon>
-					</template>
-				</v-data-table>
-			</v-card>
-		</v-container>
+					</span>
+				</template>
+			</v-btn>
+		</v-row>
+		<v-card>
+			<v-card-title>
+				{{ $tc('user', 2) }}
+				<v-spacer />
+				<v-text-field
+					v-model="search"
+					outlined
+					dense
+					append-icon="mdi-magnify"
+					:label="$t('searchAnyDataFromUsers')"
+				/>
+			</v-card-title>
+			<v-data-table :headers="headers" :items="users" :search="search">
+				<template v-slot:[`item.role`]="{ item }">
+					<v-chip :color="chipColor(item)" dark>
+						{{ item.role }}
+					</v-chip>
+				</template>
+				<template v-slot:[`item.actions`]="{ item }">
+					<v-icon color="red darken-2" @click="deleteCategory(item)">
+						mdi-delete
+					</v-icon>
+				</template>
+			</v-data-table>
+		</v-card>
+		<v-snackbar
+			app
+			absolute
+			bottom
+			right
+			timeout="4000"
+			color="primary"
+			dark
+			elevation="7"
+			v-model="hasAlert"
+			max-width="400"
+		>
+			{{ alert }}
+		</v-snackbar>
 	</section>
 </template>
 
@@ -36,10 +86,15 @@ import { mapState, mapActions } from 'vuex';
 export default {
 	data() {
 		return {
+			user: {
+				name: '',
+				phoneNumber: '',
+				password: '',
+			},
 			headers: [
 				{ text: this.$t('name'), value: 'name' },
-				{ text: $t('phoneNumber'), value: 'phoneNumber' },
-				{ text: $t('role'), align: 'center', value: 'role' },
+				{ text: this.$t('phoneNumber'), value: 'phoneNumber' },
+				{ text: this.$t('role'), align: 'center', value: 'role' },
 				{
 					text: this.$tc('action', 1),
 					value: 'actions',
@@ -48,6 +103,9 @@ export default {
 				},
 			],
 			search: '',
+			isLoading: false,
+			hasAlert: false,
+			alert: '',
 		};
 	},
 	computed: {
@@ -77,6 +135,21 @@ export default {
 			} else {
 				return 'success';
 			}
+		},
+		setUser() {
+			this.$axios
+				.post('/superadmin/users', this.user)
+				.then(() => {
+					this.showAlert(this.$t('successfullyCreated'));
+				})
+				.catch(err => {
+					this.showAlert(err.message);
+				});
+		},
+		showAlert(mes) {
+			this.isLoading = false;
+			this.alert = mes;
+			this.hasAlert = true;
 		},
 	},
 	created() {
