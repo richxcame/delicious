@@ -44,5 +44,7 @@
 	"role": "Role",
 	"searchAnyDataFromUsers": "Search any data from users",
 	"password": "Password",
-	"addUser": "addUser"
+	"addUser": "addUser",
+	"order": "Order | Orders",
+	"searchAnyDataFromOrders": "Search any data from orders"
 }

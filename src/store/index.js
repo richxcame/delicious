@@ -17,6 +17,8 @@ export default new Vuex.Store({
 		article: {},
 		users: [],
 		user: {},
+		orders: [],
+		order: {},
 	},
 	mutations: {
 		setCategories(state, categories) {
@@ -54,6 +56,12 @@ export default new Vuex.Store({
 		},
 		setUser(state, user) {
 			state.user = user;
+		},
+		setUsers(state, orders) {
+			state.orders = orders;
+		},
+		setUser(state, order) {
+			state.order = order;
 		},
 	},
 	actions: {
@@ -184,6 +192,29 @@ export default new Vuex.Store({
 				.get(`/superadmin/users/${id}`)
 				.then(res => {
 					commit('setUser', res.data.data);
+					return res.data.data;
+				})
+				.catch(err => {
+					return err;
+				});
+		},
+		fetchOrders({ commit }) {
+			axios
+				.get(`/superadmin/orders`)
+				.then(res => {
+					console.log(res.data.data);
+					commit('setOrders', res.data.data);
+					return res.data.data;
+				})
+				.catch(err => {
+					return err;
+				});
+		},
+		fetchOrder({ commit }, id) {
+			axios
+				.get(`/superadmin/orders/${id}`)
+				.then(res => {
+					commit('setOrder', res.data.data);
 					return res.data.data;
 				})
 				.catch(err => {
