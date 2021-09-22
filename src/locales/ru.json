@@ -46,5 +46,10 @@
 	"password": "Password",
 	"addUser": "addUser",
 	"order": "Order | Orders",
-	"searchAnyDataFromOrders": "Search any data from orders"
+	"searchAnyDataFromOrders": "Search any data from orders",
+	"totalPrice": "Total price",
+	"shippingAddress": "Shipping address",
+	"timeToDeliver": "Time to deliver",
+	"isDelivered": "Is delivered",
+	"urgent": "Urgent"
 }

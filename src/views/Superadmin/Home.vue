@@ -108,12 +108,42 @@
 					>
 						<template v-slot:[`item.isDelivered`]="{ item }">
 							<v-switch v-model="item.isDelivered" />
-							<!-- {{ item.isDelivered }} -->
+						</template>
+						<template v-slot:[`item.totalPrice`]="{ item }">
+							{{ item.totalPrice }} TMT
+						</template>
+						<template v-slot:[`item.actions`]="{ item }">
+							<div>
+								<v-btn icon class="mx-1" @click="updateCategory(item)">
+									<v-icon color="primary">
+										mdi-pencil
+									</v-icon>
+								</v-btn>
+								<v-btn @click="deleteOrder(item)" icon class="mx-1">
+									<v-icon color="red darken-2">
+										mdi-delete
+									</v-icon>
+								</v-btn>
+							</div>
 						</template>
 					</v-data-table>
 				</v-card>
 			</v-container>
 		</v-row>
+		<v-snackbar
+			app
+			absolute
+			bottom
+			right
+			timeout="4000"
+			color="primary"
+			dark
+			elevation="7"
+			v-model="hasAlert"
+			max-width="400"
+		>
+			{{ alert }}
+		</v-snackbar>
 	</section>
 </template>
 
@@ -124,6 +154,8 @@ export default {
 	data() {
 		return {
 			search: '',
+			alert: '',
+			hasAlert: false,
 			info: [
 				{
 					icon: 'mdi-monitor-cellphone',
@@ -152,18 +184,23 @@ export default {
 			],
 			headers: [
 				{
-					text: 'Shipping Address',
+					text: this.$t('shippingAddress'),
 					align: 'start',
-					sortable: false,
-					value: 'shippingAddress',
+					value: 'addressId',
 				},
-				{ text: 'Delivered At', value: 'deliveredAt' },
-				{ text: 'Delivered', value: 'isDelivered' },
+				{ text: this.$t('timeToDeliver'), value: 'timeToDeliver' },
+				{ text: this.$t('isDelivered'), value: 'isDelivered' },
 				{
-					text: 'Total Price',
+					text: this.$t('totalPrice'),
 					align: 'center',
 					value: 'totalPrice',
 					sortable: true,
+				},
+				{
+					text: this.$tc('action', 2),
+					align: 'end',
+					value: 'actions',
+					sortable: false,
 				},
 			],
 		};
@@ -173,6 +210,20 @@ export default {
 	},
 	methods: {
 		...mapActions(['fetchOrders']),
+		deleteOrder(order) {
+			this.$axios
+				.delete(`/superadmin/orders/${order.id}`)
+				.then(() => {
+					this.showAlert(this.$t('successfullyDeleted'));
+				})
+				.catch(err => {
+					this.showAlert(err.message);
+				});
+		},
+		showAlert(mes) {
+			this.alert = mes;
+			this.hasAlert = true;
+		},
 	},
 	created() {
 		this.fetchOrders();

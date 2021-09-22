@@ -17,6 +17,14 @@ const routes = [
 		children: [
 			{ path: '', component: () => import('../views/Superadmin/Home.vue') },
 			{
+				path: 'orders',
+				component: () => import('../views/Superadmin/Orders.vue'),
+			},
+			{
+				path: 'orders/:id',
+				component: () => import('../views/Superadmin/Order.vue'),
+			},
+			{
 				path: 'restaurants',
 				component: () => import('../views/Superadmin/Restaurants.vue'),
 			},

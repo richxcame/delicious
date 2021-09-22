@@ -72,12 +72,17 @@ export default {
 			links: [
 				{ icon: 'mdi-home-outline', to: '/superadmin/', name: this.$t('home') },
 				{
-					icon: 'mdi-home-group',
-					to: '/superadmin/restaurants',
-					name: 'Restaraunts',
+					icon: 'mdi-truck-delivery-outline',
+					to: '/superadmin/orders',
+					name: this.$tc('order', 2),
 				},
 				{
-					icon: 'mdi-food',
+					icon: 'mdi-home-city-outline',
+					to: '/superadmin/restaurants',
+					name: this.$tc('restaurant', 2),
+				},
+				{
+					icon: 'mdi-food-apple-outline',
 					to: '/superadmin/dishes',
 					name: this.$tc('dish', 2),
 				},
