@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<v-row>
+		<v-row class="my-7">
 			<v-col cols="12" md="4">
 				<v-text-field outlined dense v-model="user.name" :label="$t('name')" />
 			</v-col>
@@ -38,7 +38,7 @@
 				</template>
 			</v-btn>
 		</v-row>
-		<v-card>
+		<v-card class="my-5">
 			<v-card-title>
 				{{ $tc('user', 2) }}
 				<v-spacer />
