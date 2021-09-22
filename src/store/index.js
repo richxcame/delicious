@@ -57,10 +57,10 @@ export default new Vuex.Store({
 		setUser(state, user) {
 			state.user = user;
 		},
-		setUsers(state, orders) {
+		setOrders(state, orders) {
 			state.orders = orders;
 		},
-		setUser(state, order) {
+		setOrder(state, order) {
 			state.order = order;
 		},
 	},
