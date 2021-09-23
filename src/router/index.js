@@ -72,7 +72,7 @@ const routes = [
 			{ path: 'dishes', component: () => import('../views/Admin/Dishes.vue') },
 			{
 				path: 'dishes/:id',
-				component: () => import('../views/Admin/Dishe.vue'),
+				component: () => import('../views/Admin/Dish.vue'),
 			},
 			{
 				path: 'categories',
