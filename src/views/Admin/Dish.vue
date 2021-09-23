@@ -127,7 +127,7 @@ export default {
 			const id = this.$route.params;
 			this.isLoading = true;
 			this.$axios
-				.put(`/superadmin/dishes/${id}`, this.dish)
+				.put(`/admin/dishes/${id}`, this.dish)
 				.then(() => {
 					this.isLoading = false;
 					this.showAlert(this.$t('successfullyUpdated'));
