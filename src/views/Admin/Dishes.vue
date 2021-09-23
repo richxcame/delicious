@@ -3,20 +3,51 @@
 		<v-container>
 			<v-row>
 				<v-col cols="12" md="6">
-					<v-text-field v-model="name" outlined dense label="Name" />
-					<v-text-field outlined v-model="price" dense label="Price" />
-					<v-file-input
+					<v-text-field
+						v-model="dish.name_tm"
+						outlined
+						dense
+						:label="$t('nameInTurkmen')"
+					/>
+					<!-- <v-text-field outlined v-model="price" dense label="Price" /> -->
+					<!-- <v-file-input
 						outlined
 						show-size
 						dense
 						label="Set image"
 						v-model="image"
+					/> -->
+				</v-col>
+				<v-col cols="12" md="6">
+					<v-text-field
+						v-model="dish.name_ru"
+						outlined
+						dense
+						:label="$t('nameInRussian')"
+					/>
+				</v-col>
+				<v-col cols="12">
+					<v-text-field
+						v-model="image"
+						outlined
+						dense
+						:label="$t('addImages')"
+						show-size
 					/>
 				</v-col>
 				<v-col cols="12" md="6">
 					<v-textarea
-						v-model="description"
-						label="Description"
+						v-model="dish.description_tm"
+						:label="$t('descriptionInTurkmen')"
+						outlined
+						dense
+						auto-grow
+					/>
+				</v-col>
+				<v-col cols="12" md="6">
+					<v-textarea
+						v-model="dish.description_ru"
+						:label="$t('descriptionInRussian')"
 						outlined
 						dense
 						auto-grow
@@ -27,11 +58,11 @@
 				block
 				color="primary"
 				height="45"
-				:disabled="loading"
-				:loading="loading"
+				:disabled="isLoading"
+				:loading="isLoading"
 				@click="setDish"
 			>
-				add dish
+				{{ $t('addDish') }}
 				<template v-slot:loader>
 					<span class="custom-loader">
 						<v-icon light>
@@ -44,7 +75,7 @@
 				<v-container>
 					<v-card>
 						<v-card-title>
-							Dishes
+							{{ $tc('dish', 2) }}
 							<v-spacer />
 							<v-text-field
 								single-line
@@ -52,7 +83,7 @@
 								v-model="search"
 								dense
 								outlined
-								placeholder="Search from dishes table"
+								:placeholder="$t('searchAnyDataFromDishes')"
 							/>
 						</v-card-title>
 						<v-data-table :headers="headers" :items="items" :search="search">
@@ -86,95 +117,79 @@
 
 <script>
 export default {
-	data: () => ({
-		headers: [
-			{ text: 'Name', value: 'name' },
-			{ text: 'Description', value: 'description' },
-			{ text: 'Active', value: 'active', align: 'center', sortable: false },
-			{ text: 'Price', value: 'price', align: 'center' },
-			{ text: 'Images', value: 'images', align: 'center' },
-			{ text: 'View Count', value: 'viewCount', align: 'center' },
-			{ text: 'Liked', value: 'likeCount', align: 'center' },
-			{ text: 'Discount', value: 'discount', align: 'center' },
-			{ text: 'Actions', value: 'actions', align: 'end', sortable: false },
-		],
-		items: [],
-		image: null,
-		name: '',
-		price: '',
-		description: '',
-		images: [],
-		search: '',
-		loading: false,
-		isActive: true,
-		hasAlert: false,
-		alert: '',
-	}),
-
+	data() {
+		return {
+			headers: [
+				{ text: this.$t('nameInTurkmen'), value: 'name_tm' },
+				{ text: this.$t('nameInRussian'), value: 'name_ru' },
+				{ text: 'Price', value: 'price', align: 'center' },
+				{ text: 'View Count', value: 'viewCount', align: 'center' },
+				{ text: 'Liked', value: 'likeCount', align: 'center' },
+				{ text: 'Discount', value: 'discount', align: 'center' },
+				{ text: 'Actions', value: 'actions', align: 'end', sortable: false },
+			],
+			image: null,
+			name: '',
+			price: '',
+			description: '',
+			image: null,
+			search: '',
+			isLoading: false,
+			isActive: true,
+			hasAlert: false,
+			alert: '',
+			dish: {
+				name_tm: '',
+				name_ru: '',
+				description_tm: '',
+				description_ru: '',
+				images: [],
+			},
+		};
+	},
 	watch: {
-		image(val) {
-			if (val) {
-				this.images.push(val);
+		image(file) {
+			if (file) {
+				this.dish.images.push(file);
 			}
-			console.log(val);
 		},
 	},
-
 	methods: {
 		setDish() {
-			this.loading = true;
+			this.isLoading = true;
 			this.$axios
-				.post('/superadmin/dishes', {
-					name: this.name,
-					price: this.price,
-					description: this.description,
-					images: this.images,
-				})
-				.then(res => {
-					this.showAlert('Successfully created');
-					this.loading = false;
+				.post('/superadmin/dishes', this.dish)
+				.then(() => {
+					this.showAlert(this.$t('successfullyCreated'));
 					this.reset();
 				})
 				.catch(err => {
-					this.loading = false;
 					this.showAlert(err.message);
 				});
 		},
-
 		deleteDish({ id }) {
 			this.$axios
 				.delete(`/superadmin/dishes/${id}`)
-				.then(res => {
-					this.showAlert('Successfully deleted');
+				.then(() => {
+					this.showAlert(this.$t('deletedSuccessfully'));
 				})
 				.catch(err => {
 					this.showAlert(err.message);
 				});
 		},
-
 		reset() {
-			this.name = '';
-			this.description = '';
-			this.image = null;
-			this.price = '';
+			this.dish.name_tm = '';
+			this.dish.name_ru = '';
+			this.dish.images = [];
+			this.dish.description_tm = '';
+			this.dish.description_ru = '';
 		},
-
 		showAlert(msg) {
+			this.isLoading = false;
 			this.alert = msg;
 			this.hasAlert = true;
 		},
 	},
-	created() {
-		this.$axios
-			.get('/superadmin/dishes')
-			.then(res => {
-				console.log(res);
-				this.items = res.data.data;
-			})
-			.catch(err => {
-				console.log(err);
-				this.showAlert(err.message);
-			});
-	},
+	created() {},
 };
 </script>

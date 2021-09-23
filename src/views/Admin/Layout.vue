@@ -47,7 +47,9 @@
 		</v-navigation-drawer>
 
 		<v-main>
-			<router-view />
+			<v-container>
+				<router-view :key="$route.fullPath" />
+			</v-container>
 		</v-main>
 
 		<v-footer app inset>

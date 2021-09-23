@@ -56,5 +56,6 @@
 	"isActive": "Is active",
 	"quantity": "Quantity",
 	"singlePrice": "Single price",
-	"goToLoginPage": "Go to login page"
+	"goToLoginPage": "Go to login page",
+	"searchAnyDataFromDishes": "Search any data from dishes"
 }
