@@ -86,7 +86,7 @@
 								:placeholder="$t('searchAnyDataFromDishes')"
 							/>
 						</v-card-title>
-						<v-data-table :headers="headers" :items="items" :search="search">
+						<v-data-table :headers="headers" :items="dishes" :search="search">
 							<template v-slot:[`item.actions`]="{ item }">
 								<v-icon small class="mr-2" color="primary">
 									mdi-pencil

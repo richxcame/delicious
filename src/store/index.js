@@ -19,6 +19,8 @@ export default new Vuex.Store({
 		user: {},
 		orders: [],
 		order: {},
+		restaurantOrders: [],
+		restaurantOrder: {},
 	},
 	mutations: {
 		setCategories(state, categories) {
@@ -62,6 +64,12 @@ export default new Vuex.Store({
 		},
 		setOrder(state, order) {
 			state.order = order;
+		},
+		setRestaurantOrders(state, restaurantOrders) {
+			state.restaurantOrders = restaurantOrders;
+		},
+		setRestaurantOrder(state, restaurantOrder) {
+			state.restaurantOrder = restaurantOrder;
 		},
 	},
 	actions: {
@@ -215,6 +223,28 @@ export default new Vuex.Store({
 				.get(`/superadmin/orders/${id}`)
 				.then(res => {
 					commit('setOrder', res.data.data);
+					return res.data.data;
+				})
+				.catch(err => {
+					return err;
+				});
+		},
+		fetchRestaurantOrders({ commit }) {
+			axios
+				.get('/admin/orders')
+				.then(res => {
+					commit('setRestaurantOrders', res.data.data);
+					return res.data.data;
+				})
+				.catch(err => {
+					return err;
+				});
+		},
+		fetchRestaurantOrder({ commit }, id) {
+			axios
+				.get(`/admin/orders/${id}`)
+				.then(res => {
+					commit('setRestaurantOrder', res.data.data);
 					return res.data.data;
 				})
 				.catch(err => {
