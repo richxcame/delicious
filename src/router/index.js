@@ -64,7 +64,16 @@ const routes = [
 		component: () => import('../views/Admin/Layout.vue'),
 		children: [
 			{ path: '', component: () => import('../views/Admin/Home.vue') },
+			{ path: 'orders', component: () => import('../views/Admin/Orders.vue') },
+			{
+				path: 'orders/:id',
+				component: () => import('../views/Admin/Order.vue'),
+			},
 			{ path: 'dishes', component: () => import('../views/Admin/Dishes.vue') },
+			{
+				path: 'dishes/:id',
+				component: () => import('../views/Admin/Dishe.vue'),
+			},
 			{
 				path: 'categories',
 				component: () => import('../views/Admin/Categories.vue'),
