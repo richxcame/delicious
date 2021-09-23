@@ -7,7 +7,7 @@
 				</v-icon>
 			</v-btn>
 			<v-toolbar-title>
-				DATLY
+				{{ companyName }}
 			</v-toolbar-title>
 			<v-spacer />
 			<router-link to="/superadmin/me">
@@ -108,6 +108,11 @@ export default {
 				},
 			],
 		};
+	},
+	computed: {
+		companyName() {
+			return process.env.VUE_APP_COMPANY_NAME;
+		},
 	},
 };
 </script>
