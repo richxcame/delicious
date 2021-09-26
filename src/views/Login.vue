@@ -31,18 +31,26 @@
 								outlined
 								color="#6C63FF"
 								:label="$t('phoneNumber')"
-								class="rounded-xl"
+								class="rounded-lg"
 								v-model="user.phoneNumber"
 							/>
 							<v-text-field
 								outlined
-								class="rounded-xl"
+								class="rounded-lg"
 								color="#6C63FF"
 								:label="$t('password')"
 								v-model="user.password"
-							/>
+								:type="isPassword ? 'password' : 'text'"
+								autocomplete="off"
+							>
+								<template v-slot:append>
+									<v-icon @click="isPassword = !isPassword">
+										{{ isPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline' }}
+									</v-icon>
+								</template>
+							</v-text-field>
 							<v-btn
-								class="rounded-xl"
+								class="rounded-lg"
 								block
 								color="#6C63FF"
 								dark
@@ -67,6 +75,7 @@ export default {
 				phoneNumber: '',
 				password: '',
 			},
+			isPassword: true,
 		};
 	},
 	computed: {
@@ -87,7 +96,12 @@ export default {
 				.post('/auth/login', this.user)
 				.then(res => {
 					this.$cookies.set('token', res.data.token);
-					this.$router.push('/superadmin');
+					if (res.data.data.role === 'superadmin') {
+						this.$router.push('/superadmin');
+					} else if (res.data.data.role === 'admin') {
+						this.$router.push('/admin');
+					}
+					console.log(res);
 				})
 				.catch(err => {
 					console.log(err);
