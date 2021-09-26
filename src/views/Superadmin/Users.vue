@@ -57,9 +57,18 @@
 					</v-chip>
 				</template>
 				<template v-slot:[`item.actions`]="{ item }">
-					<v-icon color="red darken-2" @click="deleteCategory(item)">
-						mdi-delete
-					</v-icon>
+					<div>
+						<v-btn icon class="mx-1" @click="updateUser(item)">
+							<v-icon color="primary">
+								mdi-pencil
+							</v-icon>
+						</v-btn>
+						<v-btn @click="deleteUser(item)" icon class="mx-1">
+							<v-icon color="red darken-2">
+								mdi-delete
+							</v-icon>
+						</v-btn>
+					</div>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -122,6 +131,9 @@ export default {
 				.catch(err => {
 					this.showAlert(err.message);
 				});
+		},
+		updateUser(user) {
+			this.$router.push(`/superadmin/users/${user.id}`);
 		},
 		reset() {
 			this.name = '';

@@ -45,6 +45,10 @@ const routes = [
 				component: () => import('../views/Superadmin/Users.vue'),
 			},
 			{
+				path: 'users/:id',
+				component: () => import('../views/Superadmin/User.vue'),
+			},
+			{
 				path: 'categories',
 				component: () => import('../views/Superadmin/Categories.vue'),
 			},
