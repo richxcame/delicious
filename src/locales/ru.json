@@ -57,5 +57,10 @@
 	"quantity": "Quantity",
 	"singlePrice": "Single price",
 	"goToLoginPage": "Go to login page",
-	"searchAnyDataFromDishes": "Search any data from dishes"
+	"searchAnyDataFromDishes": "Search any data from dishes",
+	"update": "Update",
+	"phoneMustValid": "Phone number must be valid",
+	"phoneRequired": "Phone number is required",
+	"newPassword": "New password",
+	"lessPassword": "Password must be minimum {c} characters"
 }

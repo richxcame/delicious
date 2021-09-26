@@ -22,6 +22,7 @@ export default new Vuex.Store({
 		order: {},
 		restaurantOrders: [],
 		restaurantOrder: {},
+		me: {},
 	},
 	mutations: {
 		setCategories(state, categories) {
@@ -71,6 +72,9 @@ export default new Vuex.Store({
 		},
 		setRestaurantOrder(state, restaurantOrder) {
 			state.restaurantOrder = restaurantOrder;
+		},
+		setMe(state, me) {
+			state.me = me;
 		},
 	},
 	actions: {
@@ -247,6 +251,17 @@ export default new Vuex.Store({
 				.then(res => {
 					commit('setRestaurantOrder', res.data.data);
 					return res.data.data;
+				})
+				.catch(err => {
+					return err;
+				});
+		},
+		fetchMe({ commit }) {
+			axios
+				.get('/auth/profile')
+				.then(res => {
+					console.log(res.data);
+					commit('setMe', res.data.data);
 				})
 				.catch(err => {
 					return err;
