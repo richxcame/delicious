@@ -11,6 +11,7 @@
 							contain
 							class="ma-5"
 							@click="handleClick"
+							style="cursor: pointer;"
 						>
 							<template v-slot:placeholder>
 								<v-skeleton-loader type="image" />
@@ -67,7 +68,6 @@ export default {
 	data() {
 		return {
 			alert: '',
-			loading: false,
 			hasAlert: false,
 		};
 	},
@@ -78,7 +78,10 @@ export default {
 		...mapActions(['fetchCategory']),
 		update() {
 			this.$axios
-				.put(`/superadmin/categories/${this.category.id}`, this.category)
+				.put(`/superadmin/categories/${this.category.id}`, {
+					name_tm: this.category.name_tm,
+					name_ru: this.category.name_ru,
+				})
 				.then(() => {
 					this.showAlert(this.$t('successfullyUpdated'));
 					this.$router.go(-1);
@@ -88,7 +91,6 @@ export default {
 				});
 		},
 		showAlert(mes) {
-			this.loading = false;
 			this.alert = mes;
 			this.hasAlert = true;
 		},
@@ -99,6 +101,16 @@ export default {
 			const image = e.srcElement.files[0];
 			if (image) {
 				this.category.image = image;
+				this.$axios
+					.put(`/superadmin/categories/${this.$route.params.id}`, {
+						image: image,
+					})
+					.then(() => {
+						this.showAlert(this.$t('successfullyUpdated'));
+					})
+					.catch(err => {
+						this.showAlert(err.message);
+					});
 			}
 		},
 	},
