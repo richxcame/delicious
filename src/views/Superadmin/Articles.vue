@@ -131,7 +131,7 @@ export default {
 			},
 			headers: [
 				{
-					text: this.$tc('images', 1),
+					text: this.$tc('image', 1),
 					value: 'images',
 					sortable: false,
 				},
