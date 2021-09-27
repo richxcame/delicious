@@ -4,7 +4,7 @@
 			<v-row>
 				<v-col cols="12">
 					<v-file-input
-						:label="$t('image')"
+						:label="$tc('image', 2)"
 						show-size
 						v-model="image"
 						outlined
@@ -31,19 +31,19 @@
 					<v-select
 						:label="$tc('category', 2)"
 						outlined
-						v-model="dish.category"
 						:items="categories"
 						dense
+						:item-text="$i18n.locale === 'ru' ? 'name_ru' : 'name_tm'"
 					/>
 				</v-col>
 				<v-col cols="12" md="6">
 					<v-select
 						:label="$tc('ingredient', 2)"
 						outlined
-						v-model="dish.ingredient"
 						:items="ingredients"
 						dense
 						multiple
+						item-text="name"
 					/>
 				</v-col>
 				<v-col cols="12" md="6">
@@ -117,6 +117,9 @@ export default {
 				this.dish.images.push(file);
 			}
 		},
+		id(val) {
+			console.log(val);
+		},
 	},
 	computed: {
 		...mapState(['dish', 'categories', 'ingredients']),
@@ -146,6 +149,8 @@ export default {
 	created() {
 		const { id } = this.$route.params;
 		this.fetchDish(id);
+		this.fetchCategories(id);
+		this.fetchIngredients(id);
 	},
 };
 </script>

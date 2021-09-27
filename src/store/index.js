@@ -46,8 +46,8 @@ export default new Vuex.Store({
 		setRestaurants(state, restaurants) {
 			state.restaurants = restaurants;
 		},
-		setRestaurant(state, restaraunt) {
-			state.restaraunt = restaraunt;
+		setRestaurant(state, restaurant) {
+			state.restaurant = restaurant;
 		},
 		setArticles(state, articles) {
 			state.articles = articles;
@@ -124,7 +124,7 @@ export default new Vuex.Store({
 		},
 		fetchIngredients({ commit }) {
 			axios
-				.get('/superadmin/ingredients')
+				.get('/superadmin/ingridients')
 				.then(res => {
 					commit('setIngredients', res.data.data);
 					return res.data.data;
@@ -135,7 +135,7 @@ export default new Vuex.Store({
 		},
 		fetchIngredient({ commit }, id) {
 			axios
-				.get(`/superadmin/ingredients/${id}`)
+				.get(`/superadmin/ingridients/${id}`)
 				.then(res => {
 					commit('setIngredient', res.data.data);
 					return res.data.data;
@@ -203,7 +203,6 @@ export default new Vuex.Store({
 			axios
 				.get(`/superadmin/users/${id}`)
 				.then(res => {
-					console.log(res.data.data);
 					commit('setUser', res.data.data);
 					return res.data.data;
 				})

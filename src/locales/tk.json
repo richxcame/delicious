@@ -64,5 +64,7 @@
 	"phoneRequired": "Phone number is required",
 	"newPassword": "New password",
 	"lessPassword": "Password must be minimum {c} characters",
-	"admin": "Admin"
+	"admin": "Admin",
+	"numberOfRatings": "Number of ratings",
+	"rating": "Rating"
 }
