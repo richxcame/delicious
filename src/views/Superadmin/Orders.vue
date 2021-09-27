@@ -7,7 +7,7 @@
 			:search="search"
 		>
 			<template v-slot:[`item.isDelivered`]="{ item }">
-				<v-switch v-model="item.isDelivered" @change="updateOrder" />
+				<v-switch v-model="item.isDelivered" @change="updateOrder(item)" />
 			</template>
 			<template v-slot:[`item.totalPrice`]="{ item }">
 				{{ item.totalPrice }} TMT
@@ -116,6 +116,10 @@ export default {
 		},
 		showOrder(order) {
 			this.$router.push(`/superadmin/orders/${order.id}`);
+		},
+		showAlert(mes) {
+			this.alert = mes;
+			this.hasAlert = true;
 		},
 	},
 	created() {
