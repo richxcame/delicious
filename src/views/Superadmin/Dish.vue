@@ -1,87 +1,113 @@
 <template>
 	<section>
-		<v-container>
-			<v-row>
-				<v-col cols="12">
-					<v-file-input
-						:label="$tc('image', 2)"
-						show-size
-						v-model="image"
-						outlined
-						dense
-					/>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-text-field
-						:label="$t('nameInTurkmen')"
-						v-model="dish.name_tm"
-						outlined
-						dense
-					/>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-text-field
-						:label="$t('nameInRussian')"
-						v-model="dish.name_ru"
-						outlined
-						dense
-					/>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-select
-						:label="$tc('category', 2)"
-						outlined
-						:items="categories"
-						dense
-						:item-text="$i18n.locale === 'ru' ? 'name_ru' : 'name_tm'"
-					/>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-select
-						:label="$tc('ingredient', 2)"
-						outlined
-						:items="ingredients"
-						dense
-						multiple
-						item-text="name"
-					/>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-textarea
-						:label="$t('descriptionInTurkmen')"
-						v-model="dish.description_tm"
-						outlined
-						dense
-						auto-grow
-					/>
-				</v-col>
-				<v-col cols="12" md="6">
-					<v-textarea
-						:label="$t('descriptionInTurkmen')"
-						v-model="dish.description_ru"
-						outlined
-						dense
-						auto-grow
-					/>
-				</v-col>
-				<v-btn
-					@click="update"
-					color="primary"
-					block
-					:disabled="isLoading"
-					:loading="isLoading"
+		<v-row>
+			<v-col
+				cols="12"
+				sm="6"
+				md="4"
+				lg="3"
+				v-for="(image, i) in dish.images"
+				:key="i"
+			>
+				<v-img
+					class="ma-2 rounded-lg"
+					:src="image"
+					contain
+					height="100%"
+					width="100%"
+					min-height="100"
 				>
-					{{ $t('updateDish') }}
-					<template v-slot:loader>
-						<span class="custom-loader">
-							<v-icon light>
-								mdi-cached
-							</v-icon>
-						</span>
+					<template v-slot:placeholder>
+						<v-skeleton-loader type="image" />
 					</template>
-				</v-btn>
-			</v-row>
-		</v-container>
+					<div class="fill-height d-flex justify-end">
+						<v-btn @click="deleteImage(i)" icon class="ma-1">
+							<v-icon color="red">mdi-delete-outline</v-icon>
+						</v-btn>
+					</div>
+				</v-img>
+			</v-col>
+		</v-row>
+		<v-row>
+			<!-- <v-col cols="12">
+				<v-file-input
+					:label="$tc('image', 2)"
+					show-size
+					v-model="image"
+					outlined
+					dense
+				/>
+			</v-col> -->
+			<v-col cols="12" md="6">
+				<v-text-field
+					:label="$t('nameInTurkmen')"
+					v-model="dish.name_tm"
+					outlined
+					dense
+				/>
+			</v-col>
+			<v-col cols="12" md="6">
+				<v-text-field
+					:label="$t('nameInRussian')"
+					v-model="dish.name_ru"
+					outlined
+					dense
+				/>
+			</v-col>
+			<v-col cols="12" md="6">
+				<v-select
+					:label="$tc('category', 2)"
+					outlined
+					:items="categories"
+					dense
+					:item-text="$i18n.locale === 'ru' ? 'name_ru' : 'name_tm'"
+				/>
+			</v-col>
+			<v-col cols="12" md="6">
+				<v-select
+					:label="$tc('ingredient', 2)"
+					outlined
+					:items="ingredients"
+					dense
+					multiple
+					item-text="name"
+				/>
+			</v-col>
+			<v-col cols="12" md="6">
+				<v-textarea
+					:label="$t('descriptionInTurkmen')"
+					v-model="dish.description_tm"
+					outlined
+					dense
+					auto-grow
+				/>
+			</v-col>
+			<v-col cols="12" md="6">
+				<v-textarea
+					:label="$t('descriptionInTurkmen')"
+					v-model="dish.description_ru"
+					outlined
+					dense
+					auto-grow
+				/>
+			</v-col>
+			<v-btn
+				@click="update"
+				color="primary"
+				block
+				:disabled="isLoading"
+				:loading="isLoading"
+			>
+				{{ $t('updateDish') }}
+				<template v-slot:loader>
+					<span class="custom-loader">
+						<v-icon light>
+							mdi-cached
+						</v-icon>
+					</span>
+				</template>
+			</v-btn>
+		</v-row>
 		<v-snackbar
 			app
 			absolute
@@ -144,6 +170,16 @@ export default {
 			this.isLoading = false;
 			this.alert = mes;
 			this.hasAlert = true;
+		},
+		deleteImage(i) {
+			this.$axios
+				.delete(`/superadmin/dishes/${this.dish.id}/images/${i}`)
+				.then(() => {
+					this.showAlert(this.$t('deletedSuccessfully'));
+				})
+				.catch(err => {
+					this.showAlert(err.message);
+				});
 		},
 	},
 	created() {
