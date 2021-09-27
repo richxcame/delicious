@@ -66,5 +66,6 @@
 	"lessPassword": "Password must be minimum {c} characters",
 	"admin": "Admin",
 	"numberOfRatings": "Number of ratings",
-	"rating": "Rating"
+	"rating": "Rating",
+	"addArticle": "Add article"
 }

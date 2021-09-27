@@ -54,7 +54,7 @@
 			:loading="isLoading"
 			@click="setArticle"
 		>
-			Add article
+			{{ $t('addArticle') }}
 			<template v-slot:loader>
 				<span class="custom-loader">
 					<v-icon light>
@@ -76,11 +76,22 @@
 				/>
 			</v-card-title>
 			<v-data-table :headers="headers" :items="articles" :search="search">
+				<template v-slot:[`item.images`]="{ item }">
+					<v-img
+						height="100"
+						width="100"
+						contain
+						:src="item.image"
+						class="rounded-lg ma-1"
+					>
+						<v-skeleton-loader type="image" />
+					</v-img>
+				</template>
 				<template v-slot:[`item.active`]="{ item }">
 					<v-switch v-model="item.active" @change="updateArticle(item)" />
 				</template>
 				<template v-slot:[`item.actions`]="{ item }">
-					<v-icon class="mr-2" color="primary" @click="updateArticle(item)">
+					<v-icon class="mr-2" color="primary" @click="showArticle(item)">
 						mdi-pencil
 					</v-icon>
 					<v-icon color="red darken-2" @click="deleteArticle(item)">
@@ -176,7 +187,14 @@ export default {
 			this.article.description_ru = '';
 		},
 		updateArticle(article) {
-			this.$router.push(`/superadmin/articles/${article.id}`);
+			this.$axios
+				.put(`/superadmin/articles/${article.id}`, article)
+				.then(() => {
+					this.showAlert(this.$t('updatedSuccessfully'));
+				})
+				.catch(err => {
+					this.showAlert(err.message);
+				});
 		},
 		deleteArticle(article) {
 			this.$axios
@@ -192,6 +210,9 @@ export default {
 			this.isLoading = false;
 			this.alert = mes;
 			this.hasAlert = true;
+		},
+		showArticle(article) {
+			this.$router.push(`/superadmin/articles/${article.id}`);
 		},
 	},
 	created() {
