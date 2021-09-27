@@ -62,5 +62,6 @@
 	"phoneMustValid": "Phone number must be valid",
 	"phoneRequired": "Phone number is required",
 	"newPassword": "New password",
-	"lessPassword": "Password must be minimum {c} characters"
+	"lessPassword": "Password must be minimum {c} characters",
+	"admin": "Admin"
 }

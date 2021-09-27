@@ -148,7 +148,6 @@ export default new Vuex.Store({
 			axios
 				.get('/superadmin/restaraunts')
 				.then(res => {
-					console.log(res.data.data);
 					commit('setRestaurants', res.data.data);
 					return res.data.data;
 				})
@@ -204,6 +203,7 @@ export default new Vuex.Store({
 			axios
 				.get(`/superadmin/users/${id}`)
 				.then(res => {
+					console.log(res.data.data);
 					commit('setUser', res.data.data);
 					return res.data.data;
 				})
@@ -215,7 +215,6 @@ export default new Vuex.Store({
 			axios
 				.get(`/superadmin/orders`)
 				.then(res => {
-					console.log(res.data.data);
 					commit('setOrders', res.data.data);
 					return res.data.data;
 				})
@@ -260,7 +259,6 @@ export default new Vuex.Store({
 			axios
 				.get('/auth/profile')
 				.then(res => {
-					console.log(res.data);
 					commit('setMe', res.data.data);
 				})
 				.catch(err => {

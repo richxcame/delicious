@@ -2,14 +2,21 @@
 	<section>
 		<v-row class="my-7">
 			<v-col cols="12" md="4">
-				<v-text-field outlined dense v-model="user.name" :label="$t('name')" />
+				<v-text-field
+					outlined
+					dense
+					v-model="user.name"
+					:label="$t('name')"
+					color="primary"
+				/>
 			</v-col>
 			<v-col cols="12" md="4">
 				<v-text-field
 					outlined
 					dense
-					v-model="user.name"
+					v-model="user.phoneNumber"
 					:label="$t('phoneNumber')"
+					color="primary"
 				/>
 			</v-col>
 			<v-col cols="12" md="4">
@@ -18,6 +25,7 @@
 					dense
 					v-model="user.password"
 					:label="$t('password')"
+					color="primary"
 				/>
 			</v-col>
 			<v-btn
@@ -26,7 +34,7 @@
 				height="45"
 				@click="setUser"
 				:loading="isLoading"
-				:disabled="isLoading"
+				disabled
 			>
 				{{ $t('addUser') }}
 				<template v-slot:loader>
