@@ -1,6 +1,5 @@
 <template>
 	<section>
-		{{ restaurant }}
 		<v-row>
 			<v-col
 				cols="12"
