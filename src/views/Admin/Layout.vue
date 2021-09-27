@@ -86,6 +86,11 @@ export default {
 					to: '/admin/categories',
 					name: this.$tc('category', 2),
 				},
+				{
+					icon: 'mdi-account-circle-outline',
+					to: '/admin/me',
+					name: this.$t('me'),
+				},
 			],
 		};
 	},

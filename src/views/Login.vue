@@ -42,6 +42,7 @@
 								v-model="user.password"
 								:type="isPassword ? 'password' : 'text'"
 								autocomplete="off"
+								@keypress.enter="login"
 							>
 								<template v-slot:append>
 									<v-icon @click="isPassword = !isPassword">
@@ -100,8 +101,9 @@ export default {
 						this.$router.push('/superadmin');
 					} else if (res.data.data.role === 'admin') {
 						this.$router.push('/admin');
+					} else {
+						this.$router.push('/');
 					}
-					console.log(res);
 				})
 				.catch(err => {
 					console.log(err);

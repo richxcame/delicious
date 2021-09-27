@@ -82,6 +82,10 @@ const routes = [
 				path: 'categories',
 				component: () => import('../views/Admin/Categories.vue'),
 			},
+			{
+				path: 'me',
+				component: () => import('../views/Admin/Me.vue'),
+			},
 		],
 	},
 	{
