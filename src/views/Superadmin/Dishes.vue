@@ -47,10 +47,12 @@
 				</v-col>
 				<v-col cols="12" md="6">
 					<v-select
-						outlined
-						v-model="dish.category"
-						:items="handleCategories"
 						dense
+						outlined
+						item-value="id"
+						:item-text="$i18n.locale === 'ru' ? 'name_ru' : 'name_tm'"
+						:items="categories"
+						v-model="dish.categoryId"
 						:label="$tc('category', 1)"
 						:menu-props="{ bottom: true, offsetY: true }"
 					/>
@@ -60,6 +62,8 @@
 						outlined
 						v-model="dish.ingredients"
 						dense
+						item-value="name"
+						:items="ingredients"
 						:label="$tc('ingredient', 2)"
 						:menu-props="{ bottom: true, offsetY: true }"
 					/>
@@ -195,6 +199,7 @@ export default {
 				description_ru: '',
 				images: [],
 				discount: null,
+				categoryId: '',
 			},
 			items: [],
 			image: null,
@@ -216,16 +221,10 @@ export default {
 		},
 	},
 	computed: {
-		...mapState(['categories', 'dishes']),
-		handleCategories() {
-			console.log(this.categories);
-			return this.categories.map(category => {
-				return category.name_tm;
-			});
-		},
+		...mapState(['categories', 'dishes', 'ingredients']),
 	},
 	methods: {
-		...mapActions(['fetchDishes', 'fetchCategories']),
+		...mapActions(['fetchDishes', 'fetchCategories', 'fetchIngredients']),
 		setDish() {
 			this.loading = true;
 			this.$axios
@@ -272,6 +271,7 @@ export default {
 	created() {
 		this.fetchDishes();
 		this.fetchCategories();
+		this.fetchIngredients();
 	},
 };
 </script>
