@@ -66,5 +66,7 @@
 	"admin": "Admin",
 	"numberOfRatings": "Number of ratings",
 	"rating": "Rating",
-	"addArticle": "Add article"
+	"addArticle": "Add article",
+	"passwordRequired": "Password required",
+	"requiredField": "Required field"
 }
