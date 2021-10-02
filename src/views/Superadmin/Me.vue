@@ -1,5 +1,5 @@
 <template>
-	<section class="fill-height d-flex align-center justify-center">
+	<section class="fill-height d-flex align-center justify-center mt-10">
 		<v-row>
 			<v-col cols="12" md="6" class="d-flex justify-center">
 				<v-img
