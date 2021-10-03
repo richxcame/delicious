@@ -24,6 +24,7 @@ export default new Vuex.Store({
 		restaurantOrder: {},
 		me: {},
 		totalUsers: 0,
+		totalOrders: 0,
 	},
 	mutations: {
 		setCategories(state, categories) {
@@ -79,6 +80,9 @@ export default new Vuex.Store({
 		},
 		SET_TOTAL_USER_NUMBER(state, totalUsers) {
 			state.totalUsers = totalUsers;
+		},
+		SET_TOTAL_ORDER_NUMBER(state, totalOrders) {
+			state.totalOrders = totalOrders;
 		},
 	},
 	actions: {
@@ -219,6 +223,7 @@ export default new Vuex.Store({
 			axios
 				.get(`/superadmin/orders?offset=${offset}&limit=${limit}`)
 				.then(res => {
+					commit('SET_TOTAL_ORDER_NUMBER', res.data.result);
 					commit('setOrders', res.data.data);
 					return res.data.data;
 				})

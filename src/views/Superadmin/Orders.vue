@@ -5,6 +5,9 @@
 			:items="orders"
 			sort-by="deliveredAt"
 			:search="search"
+			hide-default-footer
+			:items-per-page="itemsPerPage"
+			:page.sync="currentPage"
 		>
 			<template v-slot:[`item.isDelivered`]="{ item }">
 				<v-switch v-model="item.isDelivered" @change="updateOrder(item)" />
@@ -30,6 +33,11 @@
 				</div>
 			</template>
 		</v-data-table>
+		<v-pagination
+			v-model="currentPage"
+			:length="Math.ceil(totalOrders / 5)"
+			:total-visible="totalVisible"
+		/>
 		<v-snackbar
 			app
 			absolute
@@ -85,12 +93,29 @@ export default {
 					sortable: false,
 				},
 			],
+			totalVisible: 7,
+			currentPage: 1,
+			itemsPerPage: 5,
 			alert: '',
 			hasAlert: false,
 		};
 	},
+	watch: {
+		currentPage(newVal) {
+			this.fetchOrders({
+				offset: (newVal - 1) * this.itemsPerPage,
+				limit: this.itemsPerPage,
+			});
+		},
+		itemsPerPage(newVal) {
+			this.fetchOrders({
+				offset: newVal * (this.currentPage - 1),
+				limit: newVal,
+			});
+		},
+	},
 	computed: {
-		...mapState(['orders']),
+		...mapState(['orders', 'totalOrders']),
 	},
 	methods: {
 		...mapActions(['fetchOrders']),
@@ -123,7 +148,7 @@ export default {
 		},
 	},
 	created() {
-		this.fetchOrders();
+		this.fetchOrders({ offset: 0, limit: this.itemsPerPage });
 	},
 };
 </script>
