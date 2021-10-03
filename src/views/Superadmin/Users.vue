@@ -24,6 +24,7 @@
 						required
 						:rules="phoneRules"
 						auto-complete="off"
+						@keypress="onlyNumber"
 					>
 						<template #prepend-inner>
 							<div class="mt-1">
@@ -234,6 +235,12 @@ export default {
 			this.isLoading = false;
 			this.alert = mes;
 			this.hasAlert = true;
+		},
+		onlyNumber($event) {
+			let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+			if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+				$event.preventDefault();
+			}
 		},
 	},
 	created() {
