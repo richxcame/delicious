@@ -82,9 +82,9 @@ export default new Vuex.Store({
 		},
 	},
 	actions: {
-		fetchCategories({ commit }) {
+		fetchCategories({ commit }, { offset, limit }) {
 			axios
-				.get('/superadmin/categories')
+				.get(`/superadmin/categories?offset=${offset}&limit=${limit}`)
 				.then(res => {
 					commit('setCategories', res.data.data);
 					return res.data.data;
@@ -104,9 +104,9 @@ export default new Vuex.Store({
 					return err;
 				});
 		},
-		fetchDishes({ commit }) {
+		fetchDishes({ commit }, { offset, limit }) {
 			axios
-				.get('/superadmin/dishes')
+				.get(`/superadmin/dishes?offset=${offset}&limit=${limit}`)
 				.then(res => {
 					commit('setDishes', res.data.data);
 					return res.data.data;
@@ -126,9 +126,9 @@ export default new Vuex.Store({
 					return err;
 				});
 		},
-		fetchIngredients({ commit }) {
+		fetchIngredients({ commit }, { offset, limit }) {
 			axios
-				.get('/superadmin/ingridients')
+				.get(`/superadmin/ingridients?offset=${offset}&limit=${limit}`)
 				.then(res => {
 					commit('setIngredients', res.data.data);
 					return res.data.data;
@@ -148,9 +148,9 @@ export default new Vuex.Store({
 					return err;
 				});
 		},
-		fetchRestaurants({ commit }) {
+		fetchRestaurants({ commit }, { offset, limit }) {
 			axios
-				.get('/superadmin/restaraunts')
+				.get(`/superadmin/restaraunts?offset=${offset}&limit=${limit}`)
 				.then(res => {
 					commit('setRestaurants', res.data.data);
 					return res.data.data;
@@ -170,9 +170,9 @@ export default new Vuex.Store({
 					return err;
 				});
 		},
-		fetchArticles({ commit }) {
+		fetchArticles({ commit }, { offset, limit }) {
 			axios
-				.get(`/superadmin/articles`)
+				.get(`/superadmin/articles?offset=${offset}&limit=${limit}`)
 				.then(res => {
 					commit('setArticles', res.data.data);
 					return res.data.data;
@@ -215,9 +215,9 @@ export default new Vuex.Store({
 					return err;
 				});
 		},
-		fetchOrders({ commit }) {
+		fetchOrders({ commit }, { offset, limit }) {
 			axios
-				.get(`/superadmin/orders`)
+				.get(`/superadmin/orders?offset=${offset}&limit=${limit}`)
 				.then(res => {
 					commit('setOrders', res.data.data);
 					return res.data.data;
