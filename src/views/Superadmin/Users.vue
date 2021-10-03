@@ -81,7 +81,14 @@
 					:label="$t('searchAnyDataFromUsers')"
 				/>
 			</v-card-title>
-			<v-data-table :headers="headers" :items="users" :search="search">
+			<v-data-table
+				:headers="headers"
+				:items="users"
+				:page.sync="currentPage"
+				:items-per-page.sync="itemsPerPage"
+				:search="search"
+				hide-default-footer
+			>
 				<template v-slot:[`item.role`]="{ item }">
 					<v-chip :color="chipColor(item)" dark>
 						{{ item.role }}
@@ -102,6 +109,11 @@
 					</div>
 				</template>
 			</v-data-table>
+			<v-pagination
+				v-model="currentPage"
+				:length="Math.ceil(totalUsers / 5)"
+				class="my-5"
+			/>
 		</v-card>
 		<v-snackbar
 			app
@@ -131,6 +143,8 @@ export default {
 				phoneNumber: '',
 				password: '',
 			},
+			currentPage: 1,
+			itemsPerPage: 5,
 			headers: [
 				{ text: this.$t('name'), value: 'name' },
 				{ text: this.$t('phoneNumber'), value: 'phoneNumber' },
@@ -159,8 +173,19 @@ export default {
 			],
 		};
 	},
+	watch: {
+		currentPage(newVal) {
+			this.fetchUsers({
+				offset: newVal * this.itemsPerPage,
+				limit: this.itemsPerPage,
+			});
+		},
+		itemsPerPage(newVal) {
+			this.fetchUsers({ offset: newVal * this.currentPage, limit: newVal });
+		},
+	},
 	computed: {
-		...mapState(['users']),
+		...mapState(['users', 'totalUsers']),
 	},
 	methods: {
 		...mapActions(['fetchUsers']),
@@ -212,7 +237,7 @@ export default {
 		},
 	},
 	created() {
-		this.fetchUsers();
+		this.fetchUsers({ offset: 0, limit: this.itemsPerPage });
 	},
 };
 </script>
