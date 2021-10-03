@@ -179,12 +179,15 @@ export default {
 	watch: {
 		currentPage(newVal) {
 			this.fetchUsers({
-				offset: newVal * this.itemsPerPage,
+				offset: (newVal - 1) * this.itemsPerPage,
 				limit: this.itemsPerPage,
 			});
 		},
 		itemsPerPage(newVal) {
-			this.fetchUsers({ offset: newVal * this.currentPage, limit: newVal });
+			this.fetchUsers({
+				offset: newVal * (this.currentPage - 1),
+				limit: newVal,
+			});
 		},
 	},
 	computed: {
