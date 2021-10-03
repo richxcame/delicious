@@ -114,6 +114,7 @@
 				v-model="currentPage"
 				:length="Math.ceil(totalUsers / 5)"
 				class="my-5"
+				:total-visible="totalVisible"
 			/>
 		</v-card>
 		<v-snackbar
@@ -146,6 +147,7 @@ export default {
 			},
 			currentPage: 1,
 			itemsPerPage: 5,
+			totalVisible: 7,
 			headers: [
 				{ text: this.$t('name'), value: 'name' },
 				{ text: this.$t('phoneNumber'), value: 'phoneNumber' },
