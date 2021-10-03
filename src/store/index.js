@@ -197,7 +197,6 @@ export default new Vuex.Store({
 				.get(`/superadmin/users?offset=${offset}&limit=${limit}`)
 				.then(res => {
 					commit('SET_TOTAL_USER_NUMBER', res.data.result);
-					console.log(res.data.result);
 					commit('setUsers', res.data.data);
 					return res.data.data;
 				})
