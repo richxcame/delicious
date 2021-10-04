@@ -163,7 +163,7 @@
 			</v-data-table>
 			<v-pagination
 				v-model="currentPage"
-				:length="Math.ceil(totalRestaurant / 5)"
+				:length="Math.ceil(totalRestaurant / itemsPerPage)"
 				:total-visible="totalVisible"
 			/>
 		</v-container>
