@@ -117,6 +117,9 @@
 				:items="restaurants"
 				class="elevation-2 mt-15"
 				:search="search"
+				hide-default-footer
+				:items-per-page="itemsPerPage"
+				:page.sync="currentPage"
 			>
 				<template v-slot:top>
 					<v-toolbar flat>
@@ -158,6 +161,11 @@
 					</div>
 				</template>
 			</v-data-table>
+			<v-pagination
+				v-model="currentPage"
+				:length="Math.ceil(totalRestaurant / 5)"
+				:total-visible="totalVisible"
+			/>
 		</v-container>
 		<v-snackbar
 			bottom
@@ -190,7 +198,9 @@ export default {
 				workingStartTime: '',
 				workingFinishTime: '',
 			},
-			name: '',
+			totalVisible: 7,
+			currentPage: 1,
+			itemsPerPage: 5,
 			image: null,
 			headers: [
 				{ text: this.$tc('image', 2), sortable: false, value: 'images' },
@@ -227,7 +237,7 @@ export default {
 		},
 	},
 	computed: {
-		...mapState(['restaurants']),
+		...mapState(['restaurants', 'totalRestaurant']),
 	},
 	methods: {
 		...mapActions(['fetchRestaurants']),
@@ -244,9 +254,14 @@ export default {
 				});
 		},
 		reset() {
-			this.name = '';
-			this.image = null;
+			this.name_tm = '';
+			this.name_ru = '';
 			this.images = [];
+			this.description_tm = '';
+			this.description_ru = '';
+			this.shippingPrice = '';
+			this.workingStartTime = '';
+			this.workingFinishTime = '';
 		},
 		deleteRestaraunt({ id }) {
 			this.$axios
@@ -279,7 +294,7 @@ export default {
 		},
 	},
 	created() {
-		this.fetchRestaurants();
+		this.fetchRestaurants({ offset: 0, limit: this.itemsPerPage });
 	},
 };
 </script>
