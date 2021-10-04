@@ -120,7 +120,13 @@
 								:placeholder="$t('search')"
 							/>
 						</v-card-title>
-						<v-data-table :headers="headers" :items="dishes" :search="search">
+						<v-data-table
+							:headers="headers"
+							:items="dishes"
+							:search="search"
+							hide-default-footer
+							:items-per-page="itemsPerPage"
+						>
 							<template v-slot:[`item.images`]="{ item }">
 								<v-img
 									height="75"
@@ -154,6 +160,11 @@
 								</div>
 							</template>
 						</v-data-table>
+						<v-pagination
+							v-model="currentPage"
+							:length="Math.ceil(totalDish / itemsPerPage)"
+							:total-visible="totalVisible"
+						/>
 					</v-card>
 				</v-container>
 			</v-row>
@@ -211,6 +222,9 @@ export default {
 			isActive: true,
 			hasAlert: false,
 			alert: '',
+			totalVisible: 7,
+			currentPage: 1,
+			itemsPerPage: 5,
 		};
 	},
 	watch: {
@@ -218,6 +232,18 @@ export default {
 			if (val) {
 				this.dish.images.push(val);
 			}
+		},
+		currentPage(newVal) {
+			this.fetchOrders({
+				offset: (newVal - 1) * this.itemsPerPage,
+				limit: this.itemsPerPage,
+			});
+		},
+		itemsPerPage(newVal) {
+			this.fetchOrders({
+				offset: newVal * (this.currentPage - 1),
+				limit: newVal,
+			});
 		},
 	},
 	computed: {
